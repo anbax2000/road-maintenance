@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+<style>
+h4{
+        text-align: center;
+        top: 13px;
+        position: relative;
+        padding-right:10px;
+    }
+form{
+        width: 90%;
+        display: flex;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        }
+
+form label{
+  font-weight:bold;
+}
+
+</style>
+
+<body>
+<h4>Road Inspection Entry</h4>
+
+<form id="road-images" action="/road/image/{{ rds_id }}" method="post" enctype="multipart/form-data"  >
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+   <div class="form-group">
+        <label for="rd_code">Road Code :&nbsp;</label>
+        <input type="text" id="rd_code" name="rd_code" style="display: inline; width: 7%;">
+        <input type="text" id="rd_name" name="rd_name" style="display: inline; width: 50%">
+    <div>
+        <label for="block">Block :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="block" name="block" style="display: inline; width: 15%">
+    </div>
+        <div class="form-group" id="category_div"> <label>Inspection Category:</label>
+            <select name="category" class="required-entry" id="category" required
+                    onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
+                <option value="">Select Inspection Category</option>
+                <option value="New Road">New Road</option>
+                <option value="Renewal BT">Renewal BT</option>
+                <option value="Culvert">Culvert</option>
+                <option value="Single Layer WBM + BT">Single Layer WBM + BT</option>
+                <option value="Double Layer WBM + BT">Double Layer WBM + BT</option>
+            </select>
+        </div>
+        <div class="form-group" id="sub_category_div"><label>Inspection Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <script type="text/javascript" language="JavaScript">
+                document.write('<select name="subcategory" id="subcategory"><option value="">Please select Inspection Type</option></select>')
+            </script>
+            <noscript>
+                <select name="subcategory" id="subcategory" required >
+                    <option value="">Please select Inspection Type</option>
+                </select>
+            </noscript>
+        </div>
+    <div>
+        <label for="culvert_chain">Chainage :</label>
+        <input type="text" id="culvert_chain" name="culvert_chain" required style="display: inline; width: 10%">
+
+        <label for="upload_by">Upload By :</label>
+        <select class="form-control" id="upload_by" name="upload_by" required style="display: inline; width: 13%">
+            {% set ins_by = ['AE','RI'] %}
+            {% for ch in ins_by %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+        </select>
+
+        <label for="inspect_by">Inspected By :</label>
+        <select class="form-control" id="inspect_by" name="inspect_by" required style="display: inline; width: 13%">
+            {% set ins_by = ['AEE','EE','PD','Collector','SQM','NQM','Others'] %}
+            {% for ch in ins_by %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+        </select>
+    </div>
+        <label for="rd_ins_desc">Inspection Description :</label>
+    <div>
+        <TEXTAREA id="rd_ins_desc" name="rd_ins_desc" rows="2" cols="50" required >Please type your comments on Inspections here..</TEXTAREA>
+    </div>
+    <div>&nbsp </div>
+    <div>
+        <label style="text-decoration: underline"> Upload Images  :-  </label>
+        <span> &nbsp </span>
+        <input type="file" id="field1" name="Image_upload" onchange="previewImages()" required multiple
+                     accept="image/jpg, image/jpeg"  >
+    </div>
+    <div>
+        <label style="text-decoration: underline"> Upload Same Images for GPS Check  :-  </label>
+        <span> &nbsp </span>
+        <input type="file" id="field2" name="Image_upload2" onchange="previewImages1()" required multiple
+                     accept="image/jpg, image/jpeg" >
+    </div>
+    <div>
+        <button type="submit" name="action" value="Image Save" class="btn btn-success">Save Images </button>
+    </div>
+    <div>&nbsp </div>
+    <label style="text-decoration: underline">Image Preview:-</label>
+    <div id="preview"></div>
+    <div>&nbsp </div>
+    <label style="text-decoration: underline">GPS Image Preview:-</label>
+    <div id="preview1"></div>
+    </div>
+
+</form>
+
+<script>
+
+document.getElementById("rd_code").readOnly = true;
+document.getElementById("rd_name").readOnly = true;
+document.getElementById("block").readOnly = true;
+
+                    var source = "/road_display/"+"{{rds_id}}";
+                    $.ajax({
+                    type: 'GET',
+                    url: source,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log(json);
+                        document.getElementById("rd_code").value = json[0]["Road_code"];
+                        document.getElementById("rd_name").value = json[0]["Road_name"];
+                        document.getElementById("block").value = json[0]["Block"];
+                },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+
+function previewImages() {
+
+  var $preview = $('#preview').empty();
+  if (this.files) $.each(this.files, readAndPreview);
+
+  function readAndPreview(i, file) {
+
+    if (!/\.(jpe?g|png|gif)$/i.test(file.name)){
+      return alert(file.name +" is not an image");
+    } // else...
+
+    var reader = new FileReader();
+
+    $(reader).on("load", function() {
+      $preview.append($("<img/>", {src:this.result, height:100}));
+    });
+
+    reader.readAsDataURL(file);
+
+  }
+}
+document.querySelector('#field1').addEventListener("change", previewImages, false);
+
+function previewImages1() {
+
+  var $preview1 = $('#preview1').empty();
+  if (this.files) $.each(this.files, readAndPreview);
+
+  function readAndPreview(i, file) {
+
+    if (!/\.(jpe?g|png|gif)$/i.test(file.name)){
+      return alert(file.name +" is not an image");
+    } // else...
+
+    var reader = new FileReader();
+
+    $(reader).on("load", function() {
+      $preview1.append($("<img/>", {src:this.result, height:100}));
+    });
+
+    reader.readAsDataURL(file);
+
+  }
+}
+document.querySelector('#field2').addEventListener("change", previewImages1, false);
+
+function dynamicdropdown(listindex)
+            {
+                document.getElementById("subcategory").length = 0;
+                switch (listindex)
+                {
+                    case "New Road" :
+                        document.getElementById("subcategory").options[0]=new Option("Please select Inspect Type","");
+                        document.getElementById("subcategory").options[1]=new Option("Earthern","Earthern");
+                        document.getElementById("subcategory").options[2]=new Option("Gravel","Gravel");
+                        document.getElementById("subcategory").options[3]=new Option("GSB","GSB");
+                        document.getElementById("subcategory").options[4]=new Option("WBM-II","WBM-II");
+                        document.getElementById("subcategory").options[5]=new Option("WBM-III","WBM-III");
+                        document.getElementById("subcategory").options[6]=new Option("BT","BT");
+                        break;
+
+                    case "Renewal BT" :
+                        document.getElementById("subcategory").options[0]=new Option("Please select Inspect Type","");
+                        document.getElementById("subcategory").options[1]=new Option("WBM-Patches","WBM-Patches");
+                        document.getElementById("subcategory").options[2]=new Option("BT-Patches","BT-Patches");
+                        break;
+
+                    case "Culvert" :
+                        document.getElementById("subcategory").options[0]=new Option("Please select Inspect Type","");
+                        document.getElementById("subcategory").options[1]=new Option("RCC Slab Culvert","RCC Slab Culvert");
+                        document.getElementById("subcategory").options[2]=new Option("Pipe Culvert","Pipe Culvert");
+                        document.getElementById("subcategory").options[3]=new Option("Causeway","Causeway");
+                        document.getElementById("subcategory").options[4]=new Option("Others","Others");
+                        document.getElementById("subcategory").options[5]=new Option("MinorBridge","MinorBridge");
+                        document.getElementById("subcategory").options[6]=new Option("MajorBridge","MajorBridge");
+                        break;
+
+                    case "Single Layer WBM + BT" :
+                        document.getElementById("subcategory").options[0]=new Option("Please select Inspect Type","");
+                        document.getElementById("subcategory").options[1]=new Option("Picking","Picking");
+                        document.getElementById("subcategory").options[2]=new Option("WBM","WBM");
+                        document.getElementById("subcategory").options[3]=new Option("BT","BT");
+                        document.getElementById("subcategory").options[4]=new Option("Side Berms","Side Berms");
+                        break;
+
+                    case "Double Layer WBM + BT" :
+                        document.getElementById("subcategory").options[0]=new Option("Please select Inspect Type","");
+                        document.getElementById("subcategory").options[1]=new Option("Picking","Picking");
+                        document.getElementById("subcategory").options[2]=new Option("GSB","GSB");
+                        document.getElementById("subcategory").options[3]=new Option("WBM-II","WBM-II");
+                        document.getElementById("subcategory").options[4]=new Option("WBM-III","WBM-III");
+                        document.getElementById("subcategory").options[5]=new Option("Side Berms","Side Berms");
+                        document.getElementById("subcategory").options[6]=new Option("Culvert","Culvert");
+                        break;
+                }
+                return true;
+            }
+</script>
+</html>
+{% endblock %}

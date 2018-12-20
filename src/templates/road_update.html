@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+ h4{
+        text-align: center;
+        top: 13px;
+        position: relative;
+        padding-right:10px;
+    }
+form{
+        width: 90%;
+        display: flex;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        }
+
+form label{
+  font-weight:bold;
+}
+
+</style>
+
+<h4>Enter Road Details</h4>
+
+<form id="new_road" action="/road/new/update/{{ rds_id }}" method="post">
+
+
+    <div class="form-group">
+        <label for="block" >Block:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="block" name="block" value="{{block}}" style="display: inline; width: 28%"/>
+    <div>
+        <label for="rd_code">Road Code:&nbsp;</label>
+        <input type="text" id="rd_code" name="rd_code" onChange="check_code()"
+               oninput="this.value = this.value.toUpperCase()" required style="display: inline; width: 10%;">
+    </div>
+    <div>
+        <label for="rd_name">Road Name:</label>
+        <input type="text" id="rd_name" name="rd_name" required style="display: inline; width: 70%">
+    </div>
+    <div>
+        <label for="rd_cat">Category:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <select class="form-group" id="rd_cat" name="rd_cat" style="display: inline; width: 13%">
+            {% set rd_cat = ['PUR','VPR'] %}
+            {% for ch in rd_cat %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="rd_width">Width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="rd_width" name="rd_width" required style="display: inline; width: 10%" >
+    </div>
+    <div>
+        <span style="text-decoration: underline"> Type of Road :- </span>
+    </div>
+    <Table>
+       <tr>
+             <th> Earthern</th>
+             <th> Gravel</th>
+             <th> WBMII </th>
+             <th> WBMIII </th>
+             <th> BT </th>
+             <th> CC </th>
+             <th> Total Length </th>
+       </tr>
+       <tr>
+           <td> <input type="text" id="rd_ty_earth" name="rd_ty_earth" class="length" value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_ty_gravel" name="rd_ty_gravel" class="length" value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_ty_wb2" name="rd_ty_wb2" class="length" value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_ty_wb3" name="rd_ty_wb3" class="length" value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_ty_bt" name="rd_ty_bt" class="length"  value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_ty_cc" name="rd_ty_cc" class="length" value="0.000" size="5" maxlength="5"> </td>
+           <td> <input type="text" id="rd_length" name="rd_length" value="0.000"> </td>
+       </tr>
+    </Table>
+    <span>&nbsp;</span>
+    <div>
+        <label for="pm_rout_code">PMGSY(Code):</label>
+        <input type="text" id="pm_rout_code" name="pm_rout_code" style="display: inline; width: 15%" >
+        <label for="bus_rut_num">Bus Plying(Route No) :</label>
+        <input type="text" id="bus_rut_num" name="bus_rut_num"  style="display: inline; width: 15%" >
+    </div>
+    <div>
+        <label for="mgn_yn">MGNRGES (Yes/No) :</label>
+        <select class="form-group" id="mgn_yn" name="mgn_yn" style="display: inline; width: 13%">
+            {% set mgn_yn = ['Yes','No']%}
+            {% for ch in mgn_yn %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+        </select>
+        <label for="hill_yn">HillRoad (Yes/No):</label>
+        <select class="form-group" id="hill_yn" name="hill_yn" style="display: inline; width: 13%">
+            {% set hill_yn = ['Yes','No'] %}
+            {% for ch in hill_yn %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="hab_name">Habitation_name :</label>
+        <input type="text" id="hab_name" name="hab_name" style="display:inline; width: 70%">
+        <label for="last_upd_yr">Last Upgradation Year:</label>
+        <input type="text" id="last_upd_yr" name="last_upd_yr" value="0000-0000" style="display: inline;" size="7" maxlength="9" >
+    </div>
+    <button type="submit" class="btn btn-success">Update Road Data</button>
+    </div>
+</form>
+<script>
+
+                    var source = "/road_display/"+"{{rds_id}}";
+                    $.ajax({
+                    type: 'GET',
+                    url: source,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log(json);
+                        document.getElementById("rd_code").value = json[0]["Road_code"];
+                        document.getElementById("rd_name").value = json[0]["Road_name"];
+                        document.getElementById("rd_cat").value = json[0]["Category_of_road"];
+                        document.getElementById("block").value = json[0]["Block"];
+                        document.getElementById("rd_width").value = json[0]["Road_width"];
+                        document.getElementById("rd_ty_earth").value = json[0]["Road_type_earth"];
+                        document.getElementById("rd_ty_gravel").value = json[0]["Road_type_gravel"];
+                        document.getElementById("rd_ty_wb2").value = json[0]["Road_type_wbII"];
+                        document.getElementById("rd_ty_wb3").value = json[0]["Road_type_wbIII"];
+                        document.getElementById("rd_ty_bt").value = json[0]["Road_type_bt"];
+                        document.getElementById("rd_ty_cc").value = json[0]["Road_type_cc"];
+                        document.getElementById("rd_length").value = json[0]["Road_length"];
+                        document.getElementById("bus_rut_num").value = json[0]["Bus_ply_route_num"];
+                        document.getElementById("pm_rout_code").value = json[0]["PMGSY_thro_lnk_rout_code"];
+                        document.getElementById("mgn_yn").value = json[0]["MGNRGES_yn"];
+                        document.getElementById("hill_yn").value = json[0]["Hill_road_yn"];
+                        document.getElementById("hab_name").value = json[0]["Habit_name"];
+                        document.getElementById("last_upd_yr").value = json[0]["Last_upgrade_yr"];
+                },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+
+$(document).on("keyup",'input.length',function(){
+  $expenses = $(this).parents('tr').find('.length');
+  $expenseTotal = $(this).parents('tr').find('#rd_length');
+  $expenseTotal.val('0.000');
+  $.each($expenses,function(index,object){
+    if($(object).val()!='')
+    {
+ $expenseTotal.val(parseFloat($expenseTotal.val())+parseFloat($(object).val()));
+    }
+  })
+ });
+
+ $(document).ready(function(){
+    $('[id^=rd_ty_earth]').keypress(validateNumber);
+    $('[id^=rd_ty_gravel]').keypress(validateNumber);
+    $('[id^=rd_ty_wb2]').keypress(validateNumber);
+    $('[id^=rd_ty_wb3]').keypress(validateNumber);
+    $('[id^=rd_ty_bt]').keypress(validateNumber);
+    $('[id^=rd_ty_cc]').keypress(validateNumber);
+    $('[id^=last_upd_yr]').keypress(validateNumber);
+ });
+
+function validateNumber(event) {
+    var key = window.event ? event.keyCode : event.which;
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        return true;
+    } else if ( key < 48 || key > 57 ) {
+        return false;
+    } else {
+    	return true;
+    }
+};
+
+document.getElementById('rd_code').readOnly = true;
+document.getElementById('rd_name').readOnly = true;
+
+function populateHabitation() {
+     var block = document.getElementById('block').value;
+     console.log(block)
+     var source = "/habitations/"+block;
+       $.ajax({
+        type: 'GET',
+        url: source,
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (json) {
+
+            var arr = [];
+            for(var i = 0; i < json.length; i++) {
+                if(arr.indexOf(json[i]['Habitation Name']) === -1) {
+                    arr.push(json[i]['Habitation Name']);
+                }
+            }
+         var $schemename = $('.habitationpicker');
+            var htmlEO = $.map(arr, function(lcn){
+                return '<option value="' + lcn + '">' + lcn + '</option>'
+            });
+
+            $schemename.html(htmlEO);
+        },
+        error: function (e) {
+            alert("error");
+        }
+    });
+}
+</script>
+{% endblock %}

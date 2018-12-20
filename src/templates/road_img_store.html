@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Road Image upload</title>
+</head>
+<body>
+<h4 style="text-align: left;">Capture Road Images</h4>
+
+<form id="road_images" action="/road_images/{{ _id }}" method="post" enctype="multipart/form-data">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <div class="form-group">
+        <label for="rdcode">Road Code</label>
+        <input type="text" id="rdcode" name="rdcode" style="display: inline; width: 10%;">
+    </div>
+    <div class="form-group">
+        <label for="rdname">Road Name</label>
+        <input type="text" id="rdname" name="rdname" style="display: inline; width: 50%">
+    </div>
+
+    <div class="form-group">
+        <span style="text-decoration: underline"> Upload Images  :- </span>
+    </div>
+    <Table class="form-group">
+       <tr>
+          <td>
+             <label for="fileInput">RCC Slab Culvert :</label>
+          <td>
+          <td  style="padding-left:2px">
+           <img id="uploadPreview" style="width: 100px; height: 100px;" />
+                <input type="file" id="uploadImage" name="culv_ty_rccslab_img" value="fileupload" multiple
+                    onchange= "PreviewImage();" accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          </td>
+       </tr>
+       <tr>
+          <td>
+            <label for="culv_ty_pipe_img">Pipe Culvert :</label>
+          <td>
+          <td  style="padding-right:2px">
+            <input type="file" id="culv_ty_pipe_img" name="culv_ty_pipe_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="culv_ty_vt_csway_img">Vented Causeway :</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="file" id="culv_ty_vt_csway_img" name="culv_ty_vt_csway_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+       <tr>
+          <td>
+              <label for="culv_ty_pip_csway_img">Piped Causeway:</label>
+          <td>
+          <td  style="padding-left:2px">
+              <input type="file" id="culv_ty_pip_csway_img" name="culv_ty_pip_csway_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+              <button type="submit" class="btn btn-success">Save Images </button>
+          </td>
+       </tr>
+       <tr>
+          <td>
+            <label for="culv_ty_hdbed_img">Hard Bed:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="file" id="culv_ty_hdbed_img" name="culv_ty_hdbed_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="culv_ty_oth_img">Others :</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="file" id="culv_ty_oth_img" name="culv_ty_oth_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="brge_ty_oth_img">Type of Bridge-Others:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="file" id="brge_ty_oth_img" name="brge_ty_oth_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="rdwidth_img">Road Width:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="file" id="rdwidth_img" name="rdwidth_img" value="fileupload" multiple accept="image/bmp, image/jpeg" >
+             <button type="submit" class="btn btn-success">Save Images </button>
+          <td>
+       </tr>
+    </Table>
+</form>
+
+</body>
+<script>
+	var selDiv = "";
+
+	document.addEventListener("DOMContentLoaded", init, false);
+
+	function init() {
+		document.querySelector('#files').addEventListener('change', handleFileSelect, false);
+		selDiv = document.querySelector("#selectedFiles");
+	}
+
+	function handleFileSelect(e) {
+
+		if(!e.target.files) return;
+
+		selDiv.innerHTML = "";
+
+		var files = e.target.files;
+		for(var i=0; i<files.length; i++) {
+			var f = files[i];
+
+			selDiv.innerHTML += f.name + "<br/>";
+
+		}
+
+	}
+
+	 function PreviewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("uploadImage").files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("uploadPreview").src = oFREvent.target.result;
+        };
+    };
+
+     function showname () {
+      var name = document.getElementById('fileInput');
+      alert('Selected file: ' + name.files.item(0).name);
+      alert('Selected file: ' + name.files.item(0).size);
+      alert('Selected file: ' + name.files.item(0).type);
+    };
+</script>
+</html>

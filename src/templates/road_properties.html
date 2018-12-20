@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+form{
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        ;
+    }
+
+</style>
+
+<body>
+<h4 style="text-align: center;">Enter Road Properties</h4>
+
+<form id="road-prop" action="/road/prop/{{ rds_id }}" method="post">
+
+    <div class="form-group">
+        <label for="rd_code">Road Code :</label>
+        <input type="text" id="rd_code" name="rd_code" style="display:inline; width: 10%">
+
+        <label for="rd_name">Road Name :</label>
+        <input type="text" id="rd_name" name="rd_name" style="display:inline; width: 70%">
+    </div>
+    <div class="form-group">
+        <span style="text-decoration: underline"> Type of Culverts  :- </span>
+    </div>
+
+    <Table class="form-group">
+       <tr>
+          <td>
+             <label for="culvert_ty_rcc_slab">RCC Slab Culvert :</label>
+          <td>
+          <td  style="padding-left:2px">
+             <input type="text" id="culvert_ty_rcc_slab" name="culvert_ty_rcc_slab" pattern="^\d*(\.\d{0,2})?$">
+          </td>
+          <td>
+            <label for="culvert_ty_pipe">Pipe Culvert :</label>
+          <td>
+          <td  style="padding-right:2px">
+            <input type="text" id="culvert_ty_pipe" name="culvert_ty_pipe" pattern="^\d*(\.\d{0,2})?$"  >
+          <td>
+          <td>
+            <label for="culvert_ty_vt_cs_way">Vented Causeway :</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="culvert_ty_vt_cs_way"  name="culvert_ty_vt_cs_way"" pattern="^\d*(\.\d{0,2})?$"  >
+          <td>
+       </tr>
+       <tr>
+          <td>
+              <label for="culvert_ty_pip_cs_way">Piped Causeway:</label>
+          <td>
+          <td  style="padding-left:2px">
+              <input type="text" id="culvert_ty_pip_cs_way" name="culvert_ty_pip_cs_way" pattern="^\d*(\.\d{0,2})?$">
+          </td>
+          <td>
+            <label for="culvert_ty_hd_bed">Hard Bed:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="culvert_ty_hd_bed" name="culvert_ty_hd_bed" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+          <td>
+            <label for="culvert_ty_oth">Others :</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="culvert_ty_oth" name="culvert_ty_oth" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+
+       <tr>
+          <td>
+            <label for="bridge_ty_oth">Type of Bridge-Others:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="bridge_ty_oth" name="bridge_ty_oth" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+    </Table>
+    <div class="form-group">
+        <label for="bus_rut_num">Bus Plying (Bus Route Number) :</label>
+        <input type="text" id="bus_rut_num" name="bus_rut_num"  style="display: inline; width: 20%" >
+    </div>
+    <div class="form-group">
+        <label for="pm_rout_code">PMGSY(Through/Link Route Code):</label>
+        <input type="text" id="pm_rout_code" name="pm_rout_code" style="display: inline; width: 20%" >
+    </div>
+    <div class="form-group">
+        <label for="mgn_yn">MGNRGES (Yes/No) :</label>
+        <input type="radio" id="mgn_yn" name="mgn_yn" checked>Yes>
+        <input type="radio" id="mgn_yn" name="mgn_yn" >No>
+    </div>
+    <div class="form-group">
+        <label for="hill_yn">HillRoad (Yes/No):</label>
+        <input type="radio" id="hill_yn" name="hill_yn" checked>Yes>
+        <input type="radio" id="hill_yn" name="hill_yn" >No>
+    </div>
+
+    <Table class="form-group">
+       <tr>
+          <td>
+             <label for="num_of_awc">Number of AWC:</label>
+          <td>
+          <td  style="padding-left:2px">
+             <input type="text" id="num_of_awc" name="num_of_awc" pattern="^\d*(\.\d{0,2})?$">
+          </td>
+          <td>
+            <label for="pry_sch">Primary school:</label>
+          <td>
+          <td  style="padding-right:2px">
+            <input type="text" id="pry_sch" name="pry_sch" pattern="^\d*(\.\d{0,2})?$"  >
+          <td>
+          <td>
+            <label for="sec_sch">Secondary school:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="sec_sch" name="sec_sch" pattern="^\d*(\.\d{0,2})?$"  >
+          <td>
+       </tr>
+       <tr>
+          <td>
+              <label for="hi_sec_sch">Higher secondary :</label>
+          <td>
+          <td  style="padding-left:2px">
+              <input type="text" id="hi_sec_sch" name="hi_sec_sch" pattern="^\d*(\.\d{0,2})?$">
+          </td>
+          <td>
+            <label for="mkt_center">Market centers:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="mkt_center" name="mkt_center" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+          <td>
+            <label for="colleges">Colleges:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="colleges" name="colleges" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+
+       <tr>
+          <td>
+            <label for="no_of_phc">No_Of_PHCs:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="no_of_phc" name="no_of_phc" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="diesel_pet_bunks">Diesel/Petrol Bunks:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="diesel_pet_bunks" name="diesel_pet_bunks" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+       <tr>
+          <td>
+            <label for="pan_off">Panchayat office:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="pan_off" name="pan_off" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+        <tr>
+          <td>
+            <label for="current_stg">Current Stage:</label>
+          <td>
+          <td  style="padding-left:2px">
+            <input type="text" id="current_stg" name="current_stg" pattern="^\d*(\.\d{0,2})?$">
+          <td>
+       </tr>
+    </Table>
+    <div class="form-group">
+        <label for="hab_code">Habitation code :</label>
+        <input type="text" id="hab_code" name="hab_code" style="display:inline; width: 10%">
+    </div>
+    <div class="form-group">
+        <label for="hab_name">Habitation_name :</label>
+        <input type="text" id="hab_name" name="hab_name" style="display:inline; width: 70%">
+    </div>
+    <button type="submit" class="btn btn-success">Save All </button>
+
+</form>
+</body>
+
+<script>
+
+                    var source = "/road_display/"+"{{rds_id}}";
+                    $.ajax({
+                    type: 'GET',
+                    url: source,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log(json);
+                        document.getElementById("rd_code").value = json[0]["Road_code"];
+                        document.getElementById("rd_name").value = json[0]["Road_name"];
+                },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+</script>
+
+{% endblock %}z

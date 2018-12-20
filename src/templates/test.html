@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script language="javascript" type="text/javascript">
+            var choices = ["one", "two"];
+            function addFields(){
+                var number = document.getElementById("member").value;
+                var container = document.getElementById("container");
+                while (container.hasChildNodes()) {
+                    container.removeChild(container.lastChild);
+                }
+                for (i=0;i<number;i++){
+                    container.appendChild(document.createTextNode("Member " + (i+1)));
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    container.appendChild(input);
+                    container.appendChild(document.createTextNode("Phone " + (i+1)));
+                    var input1 = document.createElement("input");
+                    input1.type = "text";
+                    container.appendChild(input1);
+                    container.appendChild(document.createTextNode("Type " + (i+1)));
+                    var input2 = document.createElement("selectHTML");
+                    var selectHTML = "";
+                    selectHTML="<select>";
+                    for(j = 0; j < choices.length; j = j + 1){
+                                selectHTML += "<option value='" + choices[j] + "'>" + choices[j] + "</option>";}
+                    selectHTML += "</select>";
+                    input2.innerHTML = selectHTML;
+                    container.appendChild(input2);
+                    container.appendChild(document.createElement("br"));
+                }
+            }
+       </script>
+    </head>
+    <title>Dynamic field generation</title>
+    <body>
+       <input type="text" id="member" name="member" value=""><br />
+        <a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+       <div id="container"></div>
+    <div></div>
+    </body>
+</html>
+
+

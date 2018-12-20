@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+form{
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        ;
+    }
+form label{
+  font-weight:bold;
+}
+
+</style>
+
+<body>
+<h4 style="text-align: center;">Enter Road Properties</h4>
+
+<form id="road-prop" action="/road/prop/update/{{ rds_id }} {{road_id}}" method="post">
+
+ <div class="form-group">
+        <label for="rd_code">Road Code :&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="rd_code" name="rd_code" style="display: inline; width: 3%;">
+        <label for="rd_name">Road Name :</label>
+        <input type="text" id="rd_name" name="rd_name" style="display: inline; width: 50%">
+
+    <div>
+        <label for="block">Block :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="block" name="block" style="display: inline; width: 15%">
+    </div>
+    <div>
+        <label for="culvert_type">Culvert type:&nbsp;&nbsp;</label>
+          <select class="form-group" id="culvert_type" name="culvert_type" required style="display: inline; width: 15%">
+            {% set culvert_type = ['RCC Slab Culvert', 'Pipe Culvert', 'Causeway',
+              'Others','Minor bridges','Major Bridges'] %}
+            {% for ch in culvert_type %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+          </select>
+    </div>
+    <div>
+        <label for="culvert_chain">Chainage :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="culvert_chain" name="culvert_chain" required style="display: inline; width: 5%">
+    </div>
+        <div class="form-group">
+        <label for="culvert_width">Culvert(Span): </label>
+        <input type="text" id="culvert_width" name="culvert_width" required style="display: inline; width: 5%">
+    </div>
+    <div class="form-group">
+        <label for="culvert_number">No of Culvert: </label>
+        <input type="text" id="culvert_number" name="culvert_number" required style="display: inline; width: 5%">
+    </div>
+    <button type="submit" class="btn btn-success">Update Road Properties </button>
+    </div>
+</form>
+</body>
+
+<script>
+
+document.getElementById('rd_code').readOnly = true;
+document.getElementById('rd_name').readOnly = true;
+document.getElementById('block').readOnly = true;
+document.getElementById('culvert_number').readOnly = true;
+
+                    var source = "/road_display_para/"+"{{rds_id}}";
+                    $.ajax({
+                    type: 'GET',
+                    url: source,
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log(json);
+                        document.getElementById("rd_code").value = json[0]["Road_code"];
+                        document.getElementById("rd_name").value = json[0]["Road_name"];
+                        document.getElementById("block").value = json[0]["Block"];
+                        document.getElementById("culvert_type").value = json[0]["Culvert_type"];
+                        document.getElementById("culvert_chain").value = json[0]["Culvert_chain"];
+                        document.getElementById("culvert_width").value = json[0]["Culvert_width"];
+                        document.getElementById("culvert_number").value = json[0]["Culvert_number"];
+                },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+</script>
+
+{% endblock %}z

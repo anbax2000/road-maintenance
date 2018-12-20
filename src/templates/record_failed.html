@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    button{
+        display: inline-block;
+    }
+
+    img{
+        width:100px;
+        height:100px;
+    }
+
+    #logged{
+        text-align: center;
+    }
+
+    #logged span{
+        color: green;
+        font-size: 50px;
+    }
+
+
+</style>
+
+<div id="logged">
+
+
+<p> <span id="Success"> No GPS details found in the Image file </span> </p>
+
+<b>DATA Not Saved!</b>
+
+
+</div>
+{% endblock %}

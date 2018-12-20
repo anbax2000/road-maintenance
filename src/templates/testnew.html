@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+<style>
+form{
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        ;
+    }
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  list-style: none;
+}
+</style>
+
+<form>
+
+<form action="form_sent.php" method="post">
+  <ul id="fieldList">
+    <li>
+      <select name="culvert_type[]" >
+            {% set culvert_type = ['Select Culvert Type','RCC Slab Culvert', 'Pipe Culvert', 'Vented Causeway', 'Piped Causeway',
+              'Hard Bed','Others','Minor bridges','Major Bridges'] %}
+            {% for ch in culvert_type %}
+                <option value= "{{ch}}">{{ch}}</option>"
+            {% endfor %}
+      </select>
+      <input name="culvert_chain[]" type="text" placeholder="Chainage @"/>
+
+      <input name="culvert_width[]" type="text" placeholder="Culvert Span"/>
+    </li>
+  </ul>
+  <button id="addMore">Add more fields</button>
+  <br>
+  <br>
+
+</form>
+
+
+</form>
+<script>
+console(123)
+$(function() {
+  $("#addMore").click(function(e) {
+    e.preventDefault();
+    $("#fieldList").append("<li>&nbsp;</li>");
+    $("#fieldList").append("<li><select name='culvert_type[]'
+                    {% set culvert_type = ['Select Culvert Type','RCC Slab Culvert', 'Pipe Culvert', 'Vented Causeway', 'Piped Causeway',
+                      'Hard Bed','Others','Minor bridges','Major Bridges'] %}
+                    {% for ch in culvert_type %}
+                        <option value= "{{ch}}">{{ch}}</option>"
+                    {% endfor %}
+                  /> </li>");
+    $("#fieldList").append("<li><input type='text' name='culvert_chain[]' placeholder='Chainage @' /></li>");
+    $("#fieldList").append("<li><input type='text' name='culvert_width[]' placeholder='Culvert Span' /></li>");
+  });
+});
+
+</script>
+</html>
+{% endblock %}

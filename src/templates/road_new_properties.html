@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+form{
+        width: 90%;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        ;
+    }
+form label{
+  font-weight:bold;
+}
+
+a{
+  font-weight:bold;
+}
+
+
+</style>
+
+<body>
+<h4 style="text-align: center;">Enter Road Properties</h4>
+
+<form id="road-prop" action="/road/prop/{{ rds_id }}" method="post">
+   <div class="form-group">
+        <label for="rd_code">Road Code :&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="rd_code" name="rd_code" style="display: inline; width: 3%;">
+        <label for="rd_name">Road Name :</label>
+        <input type="text" id="rd_name" name="rd_name" style="display: inline; width: 50%">
+
+   <div>
+        <label for="block">Block :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" id="block" name="block" style="display: inline; width: 15%">
+   </div>
+   <div class="form-group">
+        <label for="member">Total Culvert:&nbsp; </label>
+        <input type="text" id="member" name="member" value="00" size="2" maxlength="2" onchange="createFields(this)" ><br />
+   <div id="header" style="width:864px;">
+    <div id="container" style="margin: 0 auto; width:855px;"></div>
+   </div>
+   </div>
+    <button type="submit" class="btn btn-success">Save All </button>
+   </div>
+</form>
+</body>
+
+<script>
+
+document.getElementById("rd_code").readOnly = true;
+document.getElementById("rd_name").readOnly = true;
+document.getElementById("block").readOnly = true;
+
+        var source = "/road_display/"+"{{rds_id}}";
+        $.ajax({
+        type: 'GET',
+        url: source,
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (json) {
+            console.log(json);
+            document.getElementById("rd_code").value = json[0]["Road_code"];
+            document.getElementById("rd_name").value = json[0]["Road_name"];
+            document.getElementById("block").value = json[0]["Block"];
+    },
+        error: function (e) {
+            alert("error");
+        }
+    });
+
+function createFields(that) {
+        $("#container").empty();
+        for(var i=0; i< parseInt(that.value); i++) {
+            var inputSNO = "sno"+i;
+            var cType = "culvert_type"+i;
+            var cChainage = "culvert_chain"+i;
+            var cSpan = "culvert_width"+i;
+            if (i === 0) {
+                var row = $('<div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;"></div>')
+                    .html(
+                        '<div style="display: flex; flex-direction: column; width: 4%">' +
+                        '<label for='+inputSNO+'>S.No</label>' +
+                        '<input type="number" id='+inputSNO+' name='+inputSNO+' value='+(i+1)+'>'+
+                        '</div>' +
+                        '<div required style="display: flex; flex-direction: column;">' +
+                            '<label for='+cType+'>Culvert Type</label>' +
+                            '<select id='+cType+' name='+cType+'>' +
+                                '{% set districts = ["RCC Slab Culvert", "Pipe Culvert", "Causeway", "Others","Minor bridges","Major Bridges"] %}'+
+                                '{% for district in districts %}'+
+                                    '<option value= "{{district}}">{{district}}</option>"'+
+                                '{% endfor %}'+
+                            '</select>'+
+                        '</div>' +
+                        '<div  style="display: flex; flex-direction: column; width: 10% ">' +
+                            '<label for='+cChainage+'>Culvert Chainage</label>' +
+                            '<input type="text" id='+cChainage+' name='+cChainage+' required >' +
+                        '</div>' +
+                        '<div  style="display: flex; flex-direction: column; width: 7% ">' +
+                            '<label for='+cSpan+'>Culvert Span</label>' +
+                            '<input type="text" id='+cSpan+' name='+cSpan+' required >'  +
+                        '</div>'
+                    );
+            }
+            else {
+                row = $('<div style="display: flex; flex-direction: row; justify-content: space-around"></div>')
+                    .html(
+                        '<div style="display: flex; flex-direction: column;width: 4%">' +
+                            '<input type="number" id='+inputSNO+' name='+inputSNO+' value='+(i+1)+'>' +
+                        '</div>' +
+                        '<div style="display: flex; flex-direction: column;">' +
+                            '<select id='+cType+' name='+cType+'>' +
+                                '{% set districts = ["RCC Slab Culvert", "Pipe Culvert", "Causeway", "Others","Minor bridges","Major Bridges"] %}'+
+                                '{% for district in districts %}'+
+                                    '<option value= "{{district}}">{{district}}</option>"'+
+                                '{% endfor %}'+
+                            '</select>'+
+                        '</div>' +
+                        '<div style="display: flex; flex-direction: column; width: 10%">' +
+                            '<input type="text" id='+cChainage+' name='+cChainage+'required>' +
+                        '</div>' +
+                        '<div style="display: flex; flex-direction: column; width: 7% ">' +
+                            '<input type="text" id='+cSpan+' name='+cSpan+' required>' +
+                        '</div>'
+                    );
+            }
+            $("#container").append(row);
+           }
+        }
+
+</script>
+
+{% endblock %}

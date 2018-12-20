@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <div id="filters">
+    <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: left; margin-top: 10px; margin-bottom: 10px">
+        <div id="Search" style="display: flex; flex-direction:  column;">
+            <label for="myInput1" style="margin-left: 10%">Search by Road Name:</label>
+            <input type="text" id="myInput1" onkeyup="myRoad()" placeholder="By Road Name.." title="Type in a road name">
+        </div>
+        <div id="Search" style="display: flex; flex-direction: column;">
+            <label for="myInput2" style="margin-left: 10%">Search by Road Code:</label>
+            <input type="text" id="myInput2" onkeyup="myCode()" placeholder="By Road Code.." title="Type in a road code">
+        </div>
+    </div>
+    <div id="roadsList">
+    </div>
+</body>
+<script>
+
+        var source = "/road_para_block_table/"+"{{block}}";
+        $.ajax({
+            type: 'GET',
+            url: source,
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (jsonFunc) {
+                            console.log(jsonFunc);
+                            $("#roadsDetails").find("tbody").empty();
+                            var tbl = $("<table class='table table-bordered table-dark' id='roadsDetails'/>");
+                            $("#roadsList").append(tbl);
+                            var hr = "<tr>";
+                            var th1 = "<th style='text-align:left;vertical-align:middle'>" + "Road Code" + "</th>";
+                            var th2 = "<th style='text-align:left;vertical-align:middle'>" + "Road Name " + "</th>";
+                            var th3 = "<th style='text-align:left;vertical-align:middle'>" + "Culvert_type" + "</th>";
+                            var th4 = "<th style='text-align:left;vertical-align:middle'>" + "Block" + "</th>";
+                            $("#roadsDetails").append(hr + th1 + th2 + th3 + th4 );
+                            for (var j = 0; j < jsonFunc.length; j++) {
+                            var rds_id;
+                                if(jsonFunc[j]["_id"]["$oid"]){
+                                    rds_id = jsonFunc[j]["_id"]["$oid"];
+                                }
+                                else {
+                                        rds_id = jsonFunc[j]["_id"];
+                                }
+                                    var url = '/road/prop/update/'+rds_id;
+                                    var row = $('<tr></tr>').html('<td>' +
+                                        jsonFunc[j]["Road_code"] + '</td>'+
+                                        '<td>'+jsonFunc[j]["Road_name"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Block"] +'</td>'+
+                                        '<td><button class="btn btn-default"><a href="' + url + '">'+ 'Update Culvert info' +'</a></button></td>');
+                                    $("#roadsDetails").append(row);
+                            }
+            },
+            error: function (e) {
+
+                alert("error");
+            }
+        });
+
+    function myRoad(){
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput1");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("roadsList");
+        tr = table.getElementsByTagName("tr");
+        console.log(tr.length);
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function myCode(){
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput2");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("roadsList");
+        tr = table.getElementsByTagName("tr");
+        console.log(tr.length);
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+</script>
+{% endblock %}

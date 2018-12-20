@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+ h4{
+        text-align: center;
+        top: 13px;
+        position: relative;
+    }
+
+
+form{
+        width: 90%;
+        display: flex;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        top: 20px;
+        position: relative;
+        padding-right:10px;
+        }
+
+</style>
+
+<h4 style="text-align: center;">Enter Road Details</h4>
+
+<form id="new_road" action="/road/new " method="post">
+
+    <div class="form-group">
+        <label for="block" >Block:</label>
+        <select id="block" name="block" style="margin-left: 1%; position: relative;">
+        <option value="Block1">Block1</option>
+        <option value="Block2">Block2</option>
+        <option value="Block3">Block3</option>
+        </select>
+    <div>
+        <label for="rd_code">Road Code:</label>
+        <input type="text" id="rd_code" name="rd_code" style="display: inline; width: 10%;">
+    </div>
+    <div>
+        <label for="rd_name">Road Name:</label>
+        <input type="text" id="rd_name" name="rd_name" style="display: inline; width: 70%">
+    </div>
+    <div>
+        <label for="rd_cat">Category :</label>
+        <input type="text" id="rd_cat" name="rd_cat" style="display: inline; width: 50%">
+    </div>
+    <div>
+        <label for="rd_width">Width   :</label>
+        <input type="text" id="rd_width" name="rd_width"  style="display: inline; width: 10%" >
+    </div>
+
+    <div class="form-group">
+        <span style="text-decoration: underline"> Type of Road :- </span>
+    </div>
+    <Table>
+       <tr>
+             <th> Earthern</th>
+             <th> Gravel</th>
+             <th> WBII </th>
+             <th> WBIII </th>
+             <th> BT </th>
+             <th> CC </th>
+             <th> Total Length </th>
+       </tr>
+       <tr>
+           <td> <input type="text" id="rd_ty_earth" name="rd_ty_earth" class="length" value="0.00" size="5" maxlength="5"  > </td>
+           <td> <input type="text" id="rd_ty_gravel" name="rd_ty_gravel" class="length" value="0.00" size="5" maxlength="5" > </td>
+           <td> <input type="text" id="rd_ty_wb2" name="rd_ty_wb2" class="length" value="0.00" size="5" maxlength="5" > </td>
+           <td> <input type="text" id="rd_ty_wb3" name="rd_ty_wb3" class="length" value="0.00" size="5" maxlength="5" > </td>
+           <td> <input type="text" id="rd_ty_bt" name="rd_ty_bt" class="length"  value="0.00" size="5" maxlength="5" > </td>
+           <td> <input type="text" id="rd_ty_cc" name="rd_ty_cc" class="length" value="0.00" size="5" maxlength="5" > </td>
+           <td> <input type="text" id="road_length" name="rd_length"> </td>
+       </tr>
+    </Table>
+    <div class="form-group">
+        <label for="last_upd_yr">Last Upgradation Year:</label>
+        <input type="text" id="last_upd_yr" name="last_upd_yr" value="0000-0000" style="display: inline; maxlength="9">
+    </div>
+    <button type="submit" class="btn btn-success">Save Road </button>
+</form>
+
+
+
+<script>
+
+//                var source = "/roads_table/";
+//                    $.ajax({
+//                    type: 'GET',
+//                    url: source,
+//                    contentType: "application/json",
+//                    dataType: 'json',
+//                    success: function (json) {
+//                            isIdValid(Road_code) {
+//                                return this.list.filter((elem) => {
+//                                    return elem.id == rd_code;
+//                                }).length > 0;
+//                             alert('this record already exists');
+//                            }
+//                });
+
+$(document).on('keyup','input.length',function(){
+  $expenses = $(this).parents('tr').find('.length');
+  $expenseTotal = $(this).parents('tr').find('#road_length');
+  $expenseTotal.val('0');
+  $.each($expenses,function(index,object){
+    if($(object).val()!='')
+    {
+ $expenseTotal.val(parseInt($expenseTotal.val())+parseInt($(object).val()));
+    }
+  })
+});
+
+$(document).ready(function(){
+    $('[id^=rd_ty_earth]').keypress(validateNumber);
+    $('[id^=rd_ty_gravel]').keypress(validateNumber);
+    $('[id^=rd_ty_wb2]').keypress(validateNumber);
+    $('[id^=rd_ty_wb3]').keypress(validateNumber);
+    $('[id^=rd_ty_bt]').keypress(validateNumber);
+    $('[id^=rd_ty_cc]').keypress(validateNumber);
+    $('[id^=last_upd_yr]').keypress(validateNumber);
+});
+
+function validateNumber(event) {
+    var key = window.event ? event.keyCode : event.which;
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        return true;
+    } else if ( key < 48 || key > 57 ) {
+        return false;
+    } else {
+    	return true;
+    }
+};
+
+</script>
+
+{% endblock %}

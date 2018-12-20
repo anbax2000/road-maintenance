@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+    <div id="roadsList"> </div>
+
+</body>
+<script>
+
+        var source = "/roads_para_table_code/"+"{{rds_id}}";
+        $.ajax({
+            type: 'GET',
+            url: source,
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (jsonFunc) {
+                            console.log(jsonFunc);
+                            $("#roadsDetails").find("tbody").empty();
+                            var tbl = $("<table class='table table-bordered table-dark' id='roadsDetails'/>");
+                            $("#roadsList").append(tbl);
+                            var hr = "<tr>";
+                            var th1 = "<th style='text-align:left;vertical-align:middle'>" + "Road Code" + "</th>";
+                            var th2 = "<th style='text-align:left;vertical-align:middle'>" + "Road Name " + "</th>";
+                            var th3 = "<th style='text-align:left;vertical-align:middle'>" + "RCC Slab Culvert" + "</th>";
+                            var th4 = "<th style='text-align:left;vertical-align:middle'>" + "Pipe Culvert" + "</th>";
+                            var th5 = "<th style='text-align:left;vertical-align:middle'>" + "Vented Causeway" + "</th>";
+                            var th6 = "<th style='text-align:left;vertical-align:middle'>" + "Piped Causeway " + "</th>";
+                            var th7 = "<th style='text-align:left;vertical-align:middle'>" + "Hard Bed" + "</th>";
+                            var th8 = "<th style='text-align:left;vertical-align:middle'>" + "Others" + "</th>";
+                            var th9 = "<th style='text-align:left;vertical-align:middle'>" + "Type of Bridges/No's" + "</th>";
+                            var th10 = "<th style='text-align:left;vertical-align:middle'>" + "Bus Plying (Bus Route Number)" + "</th>";
+                            var th11 = "<th style='text-align:left;vertical-align:middle'>" + "MGNRGES (Yes/No)" + "</th>";
+                            var th12 = "<th style='text-align:left;vertical-align:middle'>" + "PMGSY (Through Link Route Code)" + "</th>";
+                            var th13 = "<th style='text-align:left;vertical-align:middle'>" + "Current Stage Of Road" + "</th>";
+                            var th14 = "<th style='text-align:left;vertical-align:middle'>" + "Hill Road (Yes/No) " + "</th>";
+                            var th15 = "<th style='text-align:left;vertical-align:middle'>" + "Number of AWC" + "</th>";
+                            var th16 = "<th style='text-align:left;vertical-align:middle'>" + "Primary School" + "</th>";
+                            var th17 = "<th style='text-align:left;vertical-align:middle'>" + "Secondary School" + "</th>";
+                            var th18 = "<th style='text-align:left;vertical-align:middle'>" + "Higher Secondary " + "</th>";
+                            var th19 = "<th style='text-align:left;vertical-align:middle'>" + "Market Centers" + "</th>";
+                            var th20 = "<th style='text-align:left;vertical-align:middle'>" + "Colleges" + "</th>";
+                            var th21 = "<th style='text-align:left;vertical-align:middle'>" + "No Of PHCs" + "</th>";
+                            var th22 = "<th style='text-align:left;vertical-align:middle'>" + "Diesel Petrol Bunks " + "</th>";
+                            var th23 = "<th style='text-align:left;vertical-align:middle'>" + "Panchayat Office" + "</th>";
+                            var th24 = "<th style='text-align:left;vertical-align:middle'>" + "Habitation Code" + "</th>";
+                            var th25 = "<th style='text-align:left;vertical-align:middle'>" + "Habitation Name" + "</th>";
+                            var th26 = "<th style='text-align:left;vertical-align:middle'>" + "Last_update_date" + "</th>";
+                            $("#roadsDetails").append(hr + th1 + th2 +  th3 + th4 + th5 + th6 + th7 +  th8 + th9 + th10
+                            + th11 + th12 +  th13 + th14 + th15 + th16 + th17 +  th18 + th19 + th20 + th21 + th22 +  th23
+                            + th24 + th25 + th26);
+                            for (var j = 0; j < jsonFunc.length; j++) {
+                            var rds_id;
+                                if(jsonFunc[j]["_id"]["$oid"]){
+                                    rds_id = jsonFunc[j]["_id"]["$oid"];
+                                }
+                                else {
+                                        rds_id = jsonFunc[j]["_id"];
+                                }
+
+                                    var row = $('<tr></tr>').html('<td>' +
+                                        jsonFunc[j]["Road_code"] + '</td>'+
+                                        '<td>'+jsonFunc[j]["Road_name"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_rccslab"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_pipe"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_vented_causeway"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_piped_causeway"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_hardbed"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Culvert_type_other"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Bridge_type_other"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Bus_ply_route_num"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["MGNRGES_yn"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["PMGSY_thro_lnk_rout_code"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Current_stage"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Hill_road_yn"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Number_of_awc"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Primary_school"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Secondary_school"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Higher_sec_school"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Market_centers"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Colleges"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["No_Of_PHCs"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Diesel_Petrol_bunks"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Panchayat_office"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Habit_code"] +'</td>'+
+                                        '<td>'+jsonFunc[j]["Habit_name"] +'</td>'+
+                                        '<td>'+moment(jsonFunc[j]["Last_update_date"]['$date']).format('DD-MM-YYYY')+'</td>');
+                                    $("#roadsDetails").append(row);
+                            }
+            },
+            error: function (e) {
+
+                alert("error");
+            }
+        });
+
+
+</script>
+{% endblock %}

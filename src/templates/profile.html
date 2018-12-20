@@ -1,0 +1,155 @@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+<style>
+  .container {
+  max-width: 750px;
+  margin: 20px auto 0 auto;
+  padding: 30px;
+  background-color: #FFF;
+   }
+
+  .form-row {
+  padding: 10px 0;
+  display: flex;
+   }
+
+        h1, h2, h5{
+            text-align: center;
+        }
+
+        h1{
+            color: darkgreen;
+        }
+
+
+
+        #dropbtn, #dropbtn1, #dropbtn2, #dropbtn3 {
+            color: #ff9666;
+            padding: 16px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: lightblue;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: darkslategrey;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: white}
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover #dropbtn #dropbtn1 {
+            background-color: #3e8e41;
+        }
+
+        .navbar .navbar-expand-lg .navbar-light .bg-light{
+            background-color: YellowGreen;
+        }
+
+        #dropbtn1 a{
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 18px
+        }
+        .navbar-brand
+        {
+          color:grey;
+          font-size: 24px;
+          margin: 0px;
+        }
+</style>
+
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary">
+  <a class="navbar-brand" href="" ><strong> Road Maintenance Application -> </strong></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <div class="dropdown">
+        <div id="dropbtn1"><a href="/profile_landing"> Profile </a></div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <div class="dropdown">
+        <div id="dropbtn2">Add</div>
+          <div class="dropdown-content">
+            <a href="/road/new">New Road</a>
+            <a href="/roads_prop_new/">Add Road Properties</a>
+            <a href="/roads_image_new/">Inspection Entry</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <div class="dropdown">
+        <div id="dropbtn2">Modify</div>
+          <div class="dropdown-content">
+            <a href="/roads_update/">Update Road</a>
+            <a href="/roads_para_update/">Update Road Properties</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <div class="dropdown">
+        <div id="dropbtn2">View</div>
+          <div class="dropdown-content">
+            <a href="/roads_image_list/">Inspection Metric</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <div class="dropdown">
+        <div id="dropbtn1"><a href="/logout">Sign-out</a></div>
+        </div>
+      </li>
+    </ul>
+  </div>
+    </nav>
+
+
+<br><br>
+
+<div class="login-circle">
+
+<h1> Road Information Application </h1>
+<br>
+<h2>Welcome, {{ user.username }}! {{ user.block }} </h2>
+
+<div id="singleLink" style="flex-direction: column; align-items: center; justify-content: space-between; display: flex;">
+      <button><a href="/change_password/{{user._id}}">Change Password</a></button>
+</div>
+
+</div>
+
+<script>
+</script>
